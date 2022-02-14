@@ -10,6 +10,7 @@ djangorestframework-simplejwt = "*"
 psycopg2 = "*"
 requests = "*"
 python-dotenv = "*"
+django-filter = "*"
 
 [dev-packages]
 
