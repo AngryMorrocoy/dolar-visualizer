@@ -1,6 +1,5 @@
 import requests
 import re
-from datetime import datetime
 from backend.settings import ENV
 
 
@@ -98,9 +97,9 @@ def get_dollar_prices_from_twitter(count: int = 5):
             if hour[0] == "1":
                 hour = "13"
 
-            # We transform all the fields into ints and deconstruct them
-            _datetime = datetime(*map(int, [year, month, day, hour]))
+            # We format the time as we expect it to be for the serializer
+            _datetime = f"{year}-{month}-{day}T{hour}:00:00Z"
 
-            response.append({"date": _datetime, "price": price, "url": url})
+            response.append({"date": _datetime, "price": price, "tweet_url": url})
 
     return response
