@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+ENV = dict(dotenv_values())
 
 
 # Quick-start development settings - unsuitable for production
@@ -79,11 +81,11 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "dolar_visualizer",
-        "USER": "django_user",
-        "PASSWORD": "Django_1234",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "NAME": ENV["DATABASE_NAME"],
+        "USER": ENV["DATABASE_USER"],
+        "PASSWORD": ENV["DATABASE_USER"],
+        "HOST": ENV["DATABASE_HOST"],
+        "PORT": ENV["DATABASE_PORT"],
     }
 }
 
