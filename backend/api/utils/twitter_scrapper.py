@@ -12,10 +12,21 @@ def extract_data_from_tweet(tweet_text: str) -> tuple:
     tweet_text = tweet_text.encode("ascii", "ignore")
     tweet_text = tweet_text.decode()
 
-    # This regular expresion groups are our required fields
-    regExpr = "^[^\d]*(\d+/\d+/\d+)[^\d]*(\d+:\d+).*\n.+Bs\.\s(\d+,\d+).*\n.+(https.+)"
+    # Regular expression to get all the data we need
+    regExpr = r"""
+            ^[^\d]*            # Ignore everything that's not a number
+            (\d+/\d+/\d+)      # The group for the date
+            [^\d]*
+            (\d+:\d+)          # The group for the time
+            .*\n               # Until you found a newline
+            .+Bs\.\s           # Any character, the string Bs, a dot and a whitespace
+            (\d+,\d+)          # The group for the price
+            .*\n
+            .+                 # Any number of characters
+            (https.+)          # The group for the url
+    """
 
-    result = re.search(regExpr, tweet_text)
+    result = re.search(regExpr, tweet_text, re.VERBOSE)
 
     # Return an invalid tuple if the regex doesn't match
     return (None, None, None, None) if not result else result.groups()
@@ -33,7 +44,7 @@ def get_dollar_prices_from_twitter(count: int = 5):
         "x-rapidapi-key": ENV["TWITTER_RAPIDAPI_KEY"],
     }
 
-    # The response from this code is a total mess should clean it
+    # The response from this request is a total mess should clean it
     req = requests.get(
         f"{API_URL}/UserTweets/",
         params={"id": monitorDolarVlaUser, "count": str(count)},
@@ -58,14 +69,15 @@ def get_dollar_prices_from_twitter(count: int = 5):
     for obj in data:
         # For each entry here
         for entry in obj["entries"]:
-            # If it's not a tweet continue
+            # If it's not a tweet ignore it
             if not "tweet" in entry["entryId"]:
                 continue
 
-            # Finally we get the actual tweet text
+            # Access the legacy field
             tweet_legacy = entry["content"]["itemContent"]["tweet_results"]["result"][
                 "legacy"
             ]
+            # Finally we get the actual tweet text
             tweet_content = tweet_legacy["full_text"]
 
             date, time, price, url = extract_data_from_tweet(tweet_content)
@@ -86,6 +98,7 @@ def get_dollar_prices_from_twitter(count: int = 5):
             if hour[0] == "1":
                 hour = "13"
 
+            # We transform all the fields into ints and deconstruct them
             _datetime = datetime(*map(int, [year, month, day, hour]))
 
             response.append({"date": _datetime, "price": price, "url": url})
