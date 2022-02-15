@@ -1,11 +1,15 @@
-from django.shortcuts import render
-
+# Rest imports
 from rest_framework import viewsets
-from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.response import Response
+from rest_framework.permissions import IsAdminUser
 
+# Authentication imports
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
+# Filtering imports
 from django_filters.rest_framework import DjangoFilterBackend
 
+# Local app imports
 from .models import DolarHistory
 from .serializers import DolarHistorySerializer
 from .utils import twitter_scrapper as scrapper
@@ -19,6 +23,14 @@ class DolarHistoryView(viewsets.ReadOnlyModelViewSet):
     pagination_class = StandardDolarHistoryPagination
     filter_backends = [DjangoFilterBackend]
     filterset_class = DolarHistoryFilter
+
+    authentication_classes = [JWTAuthentication]
+
+    def get_permissions(self):
+        """Doesn't allow not admin authenticated users to do post requests"""
+        if self.action == "create":
+            return [IsAdminUser()]
+        return []
 
     def create(self, request, *args, **kwargs):
         count = 10
