@@ -23,7 +23,7 @@ ENV = dict(dotenv_values())
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-y-n7hf&k-e+!mi#o4u4=z7a^8(whrlc(y6d@6-1-l68jveyn&x"
+SECRET_KEY = ENV["DJANGO_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

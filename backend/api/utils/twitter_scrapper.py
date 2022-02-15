@@ -35,11 +35,13 @@ def get_dollar_prices_from_twitter(count: int = 5):
     """Using an external api fetchs the tweets from the @monitordolarvla user
     and transform their tweets into objects with the next fields:
         ( 'date', 'price', 'tweet_url',)"""
+
+    TWITTER_RAPIDAPI_HOST = "twitter135.p.rapidapi.com"
     API_URL = "https://twitter135.p.rapidapi.com"
     monitorDolarVlaUser = "1111628873211527168"
 
     headers = {
-        "x-rapidapi-host": ENV["TWITTER_RAPIDAPI_HOST"],
+        "x-rapidapi-host": TWITTER_RAPIDAPI_HOST,
         "x-rapidapi-key": ENV["TWITTER_RAPIDAPI_KEY"],
     }
 
