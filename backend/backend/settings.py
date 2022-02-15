@@ -26,9 +26,9 @@ ENV = dict(dotenv_values())
 SECRET_KEY = "django-insecure-y-n7hf&k-e+!mi#o4u4=z7a^8(whrlc(y6d@6-1-l68jveyn&x"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost"]
 
 
 # Application definition
@@ -77,6 +77,15 @@ TEMPLATES = [
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=372),
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
 }
 
 WSGI_APPLICATION = "backend.wsgi.application"
