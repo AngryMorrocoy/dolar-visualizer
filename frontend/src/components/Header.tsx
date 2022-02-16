@@ -1,14 +1,23 @@
 import { FunctionComponent } from 'react';
-import { Typography, Layout } from 'antd';
-
-const { Title } = Typography;
-const { Header: _Header } = Layout;
+import Typography from '@mui/material/Typography';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
 
 const Header: FunctionComponent<any> = (): JSX.Element => {
   return (
-    <_Header>
-      <Title>Dolar en Tiempo</Title>
-    </_Header>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" sx={{ p: 2 }}>
+        <Typography
+          variant="h6"
+          sx={{
+            m: 'auto',
+          }}
+        >
+          DOLAR EN VENEZUELA 💸
+        </Typography>
+      </AppBar>
+    </Box>
   );
 };
 
