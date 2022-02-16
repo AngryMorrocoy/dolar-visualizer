@@ -11,6 +11,7 @@ psycopg2 = "*"
 requests = "*"
 python-dotenv = "*"
 django-filter = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
