@@ -20,6 +20,7 @@ from django.views.static import serve
 from backend.settings import STATIC_ROOT
 
 urlpatterns = [
+    path("", include("frontend.urls")),
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
     re_path("static/(?P<path>).*", serve, {"document_root": STATIC_ROOT}),

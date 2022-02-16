@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "api",
+    "frontend",
 ]
 
 MIDDLEWARE = [
@@ -78,6 +79,8 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=372),
 }
+
+# Uncomment this for production
 
 # REST_FRAMEWORK = {
 #     "DEFAULT_RENDERER_CLASSES": [
@@ -140,7 +143,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "assets/"
+STATICFILES_DIRS = [
+    Path().joinpath(BASE_DIR, "frontend", "templates", "frontend", "assets")
+]
 STATIC_ROOT = Path().joinpath(BASE_DIR, "static")
 
 
