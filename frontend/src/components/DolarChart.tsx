@@ -3,65 +3,27 @@ import { FunctionComponent } from 'react';
 import {
   VictoryLine,
   VictoryChart,
-  VictoryAxis,
   VictoryZoomContainer,
   VictoryTooltip,
   VictoryScatter,
 } from 'victory';
-
-import axios from 'axios';
-
-type dolarHistoryResult = {
-  date: Date;
-  price: number;
-  url: string;
-};
-
-type dolarHistoryResponse = {
-  date: string;
-  price: number;
-  url: string;
-};
+import { DolarHistoryAPIResult } from '../services/DolarApi/types';
+import { getDolarHistory } from '../services/DolarApi/util';
 
 const DolarChart: FunctionComponent<any> = (): JSX.Element => {
-  const mockData = [
-    { quarter: 1, earnings: 19000 },
-    { quarter: 2, earnings: 16500 },
-    { quarter: 3, earnings: 14250 },
-    { quarter: 4, earnings: 1200 },
-    { quarter: 5, earnings: 15009 },
-    { quarter: 6, earnings: 12411 },
-    { quarter: 7, earnings: 1241 },
-    { quarter: 8, earnings: 18958 },
-    { quarter: 9, earnings: 19089 },
-    { quarter: 10, earnings: 19000 },
-  ];
-
-  const [chartData, setChartData] = useState<dolarHistoryResult[]>([]);
+  const [chartData, setChartData] = useState<DolarHistoryAPIResult[]>([]);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:8000/api/dolar-history/', {
-        params: {
-          date__range: '2021-12-01T00:00:00Z,2022-01-04T23:59:59Z',
-          page_size: 46,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        const data = response.data.results;
-        const respParsed: dolarHistoryResult[] = data.map(
-          (result: dolarHistoryResponse) => {
-            const dateSecs = Date.parse(result.date);
-            return { ...result, date: new Date(dateSecs) };
-          }
-        );
-
-        setChartData(respParsed);
-      })
-      .catch((error) => {
-        console.error(error);
+    const fetchDolar = async () => {
+      const dolarHistory = await getDolarHistory({
+        page_size: 500,
+        date__range: ['2021-12-01T00:00:00Z', '2022-02-01T23:59:59Z'],
       });
+
+      setChartData(dolarHistory);
+    };
+
+    fetchDolar();
   }, []);
 
   return (
@@ -71,20 +33,16 @@ const DolarChart: FunctionComponent<any> = (): JSX.Element => {
       domainPadding={20}
       containerComponent={<VictoryZoomContainer zoomDimension="x" />}
     >
-      {
-        // <VictoryAxis
-        //   tickValues={chartData.map((item) => item.date)}
-        //   tickFormat={chartData.map(
-        //     (item) => `${item.date.getDay()}-${item.date.getMonth()}`
-        //   )}
-        // />
-        // <VictoryAxis dependentAxis />
-      }
-
-      <VictoryLine data={chartData} x="date" y="price" />
+      <VictoryLine
+        style={{ data: { strokeWidth: 1 } }}
+        data={chartData}
+        x="date"
+        y="price"
+      />
 
       <VictoryScatter
-        style={{ data: { fill: 'salmon' } }}
+        style={{ data: { fill: 'red' } }}
+        size={2}
         data={chartData}
         x="date"
         y="price"

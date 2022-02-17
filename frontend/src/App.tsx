@@ -11,9 +11,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Header />
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <p style={{ width: '100%' }}>
-          <DolarChart />
-        </p>
+        <DolarChart />
       </div>
     </ThemeProvider>
   );
