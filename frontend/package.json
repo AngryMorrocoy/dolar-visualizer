@@ -15,7 +15,7 @@
         "axios": "^0.26.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "victory": "^36.3.0"
+        "recharts": "^2.1.9"
     },
     "devDependencies": {
         "@types/react": "^17.0.33",
