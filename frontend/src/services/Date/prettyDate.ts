@@ -7,7 +7,7 @@ const addLeadingZeroes = (value: number, expectedLength: number): string => {
 };
 
 export const prettyDate = (dateObj: Date): string => {
-  const day = addLeadingZeroes(dateObj.getDay(), 2);
+  const day = addLeadingZeroes(dateObj.getDate(), 2);
   const month = addLeadingZeroes(dateObj.getMonth() + 1, 2);
   const year = dateObj.getFullYear();
 

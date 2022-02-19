@@ -1,8 +1,16 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 import { DolarHistoryAPIResult } from '../../services/DolarApi/types';
 import { getDolarHistory } from '../../services/DolarApi/util';
-import { Area, AreaChart, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts';
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { prettyDate } from '../../services/Date/prettyDate';
+import DolarChartGradient from './DolarChartGradient';
 
 const DolarChart: FunctionComponent<any> = (): JSX.Element => {
   const [chartData, setChartData] = useState<DolarHistoryAPIResult[]>([]);
@@ -11,8 +19,8 @@ const DolarChart: FunctionComponent<any> = (): JSX.Element => {
   useEffect(() => {
     const fetchDolar = async () => {
       const dolarHistory = await getDolarHistory({
-        page_size: 100,
-        // date__range: ['2021-12-01T00:00:00Z', '2022-02-01T23:59:59Z'],
+        page_size: 300,
+        // date__range: ['2021-10-01', '2021-10-20'],
       });
 
       setChartData(dolarHistory.reverse());
@@ -32,26 +40,21 @@ const DolarChart: FunctionComponent<any> = (): JSX.Element => {
         left: 10,
         bottom: 5,
       }}
+      onClick={(ns, evt) => {
+        console.log(ns);
+        console.log(evt);
+      }}
     >
       <defs>
-        <linearGradient
-          id="dolarHistoryGradient"
-          x1="50%"
-          y1="0%"
-          x2="50%"
-          y2="100%"
-        >
-          <stop offset="5%" stopColor="rgb(0, 75, 168)" stopOpacity={0.7} />
-          <stop offset="95%" stopColor="rgb(0, 75, 168)" stopOpacity={0.1} />
-        </linearGradient>
+        <DolarChartGradient id="dolarHistoryGradient" />
       </defs>
 
       <Area
         type="monotone"
         dataKey="price"
-        stroke="#000000"
-        fillOpacity={0.9}
+        stroke="rgb(0, 75, 168)"
         fill="url(#dolarHistoryGradient)"
+        dot={true}
       />
 
       <XAxis
@@ -59,22 +62,24 @@ const DolarChart: FunctionComponent<any> = (): JSX.Element => {
         minTickGap={10}
         tickFormatter={(value) => {
           if (!(value instanceof Date)) return '';
-
           const formattedDate = prettyDate(value);
           const onlyDate = formattedDate.match(/^[^\s]+/);
-
-          if (!onlyDate) return "";
+          if (!onlyDate) return '';
 
           return onlyDate[0];
         }}
         domain={['dataMin', 'dataMax']}
+        interval="preserveEnd"
       />
+
       <YAxis
+        minTickGap={0.2}
+        interval="preserveStartEnd"
         dataKey="price"
         tickFormatter={(value: number) => {
           return value.toFixed(2);
         }}
-        domain={['dataMin - 0.01', 'dataMax']}
+        domain={['dataMin - 0.01', 'dataMax + 0.05']}
       />
 
       <Tooltip
@@ -87,6 +92,8 @@ const DolarChart: FunctionComponent<any> = (): JSX.Element => {
         }}
         animationDuration={0}
       />
+
+      <CartesianGrid strokeDasharray="1 1 0" stroke="gray" />
     </AreaChart>
   );
 };
