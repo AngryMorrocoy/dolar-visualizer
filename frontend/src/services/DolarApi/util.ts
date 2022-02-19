@@ -1,6 +1,6 @@
 import axios from 'axios';
-import parseDateFromDolarApi from '../Date/parseDateFromDolarApi';
 import { DolarHistoryAPIResult, DolarHistoryAPIResponse } from './types';
+import dayjs from 'dayjs';
 
 const API_URL = 'http://localhost:8000/api';
 
@@ -25,7 +25,7 @@ const getDolarHistory = async (query_params?: {
 
     const results: DolarHistoryAPIResult[] = response.data.results.map(
       (result) => {
-        return { ...result, date: parseDateFromDolarApi(result.date) };
+        return { ...result, date: dayjs(result.date) };
       }
     );
 

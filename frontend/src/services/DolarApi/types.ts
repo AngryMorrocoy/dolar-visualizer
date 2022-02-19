@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs'
+
 export type DolarHistoryAPIJSONResult = {
   date: string;
   price: number;
@@ -5,7 +7,7 @@ export type DolarHistoryAPIJSONResult = {
 };
 
 export type DolarHistoryAPIResult = {
-  date: Date;
+  date: Dayjs;
   price: number;
   tweet_url: string;
 };

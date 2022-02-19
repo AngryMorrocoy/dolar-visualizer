@@ -20,7 +20,7 @@ const DolarChart: FunctionComponent<any> = (): JSX.Element => {
     const fetchDolar = async () => {
       const dolarHistory = await getDolarHistory({
         page_size: 300,
-        // date__range: ['2021-10-01', '2021-10-20'],
+        date__range: ['2021-10-01', '2022-02-20'],
       });
 
       setChartData(dolarHistory.reverse());
@@ -33,7 +33,9 @@ const DolarChart: FunctionComponent<any> = (): JSX.Element => {
     <AreaChart
       width={900}
       height={600}
-      data={chartData}
+      data={chartData.map((value) => {
+        return { ...value, date: value.date.toDate() };
+      })}
       margin={{
         top: 30,
         right: 30,
