@@ -17,7 +17,7 @@ const DateRangePicker: FunctionComponent<DateRangePickerProps> = ({
   value,
   onChange,
   startLabel,
-  endLabel
+  endLabel,
 }): JSX.Element => {
   return (
     <Box>
@@ -28,7 +28,15 @@ const DateRangePicker: FunctionComponent<DateRangePickerProps> = ({
           onChange={(date) => onChange(date, 'start')}
           label={startLabel}
           renderInput={(params) => (
-            <TextField {...params} name="start-date" id="startDate" />
+            <TextField
+              {...params}
+              name="start-date"
+              id="startDate"
+              size="small"
+              sx={{
+                m: 2,
+              }}
+            />
           )}
         />
         <DatePicker
@@ -37,7 +45,15 @@ const DateRangePicker: FunctionComponent<DateRangePickerProps> = ({
           onChange={(date) => onChange(date, 'end')}
           label={endLabel}
           renderInput={(params) => (
-            <TextField {...params} name="end-date" id="endDate" />
+            <TextField
+              {...params}
+              name="end-date"
+              id="endDate"
+              size="small"
+              sx={{
+                m: 2,
+              }}
+            />
           )}
         />
       </LocalizationProvider>

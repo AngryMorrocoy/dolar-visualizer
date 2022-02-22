@@ -5,6 +5,7 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -15,8 +16,8 @@ import { DateRange, dateRangeAsIsoDate } from '../../services/Date';
 
 export interface DolarChartProps {
   dateRange: DateRange;
-  width: number;
-  height: number;
+  width: string | number;
+  height: string | number;
 }
 
 const DolarChart: FunctionComponent<DolarChartProps> = ({
@@ -43,73 +44,67 @@ const DolarChart: FunctionComponent<DolarChartProps> = ({
   }, [dateRange]);
 
   return (
-    <AreaChart
-      width={width}
-      height={height}
-      data={chartData.map((value) => {
-        return { ...value, date: value.date.toDate() };
-      })}
-      margin={{
-        top: 30,
-        right: 30,
-        left: 10,
-        bottom: 5,
-      }}
-      onClick={(ns, evt) => {
-        console.log(ns);
-        console.log(evt);
-      }}
-    >
-      <defs>
-        <DolarChartGradient id="dolarHistoryGradient" />
-      </defs>
-
-      <Area
-        type="monotone"
-        dataKey="price"
-        stroke="rgb(0, 75, 168)"
-        fill="url(#dolarHistoryGradient)"
-        dot={true}
-      />
-
-      <XAxis
-        dataKey="date"
-        minTickGap={10}
-        tickFormatter={(value) => {
-          if (!(value instanceof Date)) return '';
-          const formattedDate = prettyDate(value);
-          const onlyDate = formattedDate.match(/^[^\s]+/);
-          if (!onlyDate) return '';
-
-          return onlyDate[0];
+    <ResponsiveContainer width={width} height={height}>
+      <AreaChart
+        data={chartData.map((value) => {
+          return { ...value, date: value.date.toDate() };
+        })}
+        onClick={(ns, evt) => {
+          console.log(ns);
+          console.log(evt);
         }}
-        domain={['dataMin', 'dataMax']}
-        interval="preserveEnd"
-      />
+      >
+        <defs>
+          <DolarChartGradient id="dolarHistoryGradient" />
+        </defs>
 
-      <YAxis
-        minTickGap={0.2}
-        interval="preserveStartEnd"
-        dataKey="price"
-        tickFormatter={(value: number) => {
-          return value.toFixed(2);
-        }}
-        domain={['dataMin - 0.01', 'dataMax + 0.05']}
-      />
+        <Area
+          type="monotone"
+          dataKey="price"
+          stroke="rgb(0, 75, 168)"
+          fill="url(#dolarHistoryGradient)"
+          dot={true}
+        />
 
-      <Tooltip
-        formatter={(value: number) => {
-          return [`${value}Bs`, 'Precio'];
-        }}
-        labelFormatter={(label: Date | undefined) => {
-          if (!(label instanceof Date)) return '';
-          return prettyDate(label);
-        }}
-        animationDuration={0}
-      />
+        <XAxis
+          dataKey="date"
+          minTickGap={10}
+          tickFormatter={(value) => {
+            if (!(value instanceof Date)) return '';
+            const formattedDate = prettyDate(value);
+            const onlyDate = formattedDate.match(/^[^\s]+/);
+            if (!onlyDate) return '';
 
-      <CartesianGrid strokeDasharray="1 1 0" stroke="gray" />
-    </AreaChart>
+            return onlyDate[0];
+          }}
+          domain={['dataMin', 'dataMax']}
+          interval="preserveEnd"
+        />
+
+        <YAxis
+          minTickGap={0.2}
+          interval="preserveStartEnd"
+          dataKey="price"
+          tickFormatter={(value: number) => {
+            return value.toFixed(2);
+          }}
+          domain={['dataMin - 0.01', 'dataMax + 0.05']}
+        />
+
+        <Tooltip
+          formatter={(value: number) => {
+            return [`${value}Bs`, 'Precio'];
+          }}
+          labelFormatter={(label: Date | undefined) => {
+            if (!(label instanceof Date)) return '';
+            return prettyDate(label);
+          }}
+          animationDuration={0}
+        />
+
+        <CartesianGrid strokeDasharray="1 1 0" stroke="gray" />
+      </AreaChart>
+    </ResponsiveContainer>
   );
 };
 
