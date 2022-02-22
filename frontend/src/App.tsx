@@ -4,10 +4,9 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import { themeOptions } from './muiTheme';
-import DolarChart from './components/DolarChart/DolarChart';
 import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
-import DateRangePicker from './components/DateRangePicker/DateRangePicker';
+import BodyChart from './components/BodyChart/BodyChart'
 
 const theme = createTheme(themeOptions);
 
@@ -17,8 +16,7 @@ const App = () => {
       <CssBaseline />
       <Header />
       <Hero />
-      <DateRangePicker />
-      <DolarChart />
+      <BodyChart />
     </ThemeProvider>
   );
 };

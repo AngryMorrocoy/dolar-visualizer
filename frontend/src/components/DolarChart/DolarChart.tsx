@@ -9,10 +9,17 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { prettyDate } from '../../services/Date/prettyDate';
+import { prettyDate } from '../../services/Date/';
 import DolarChartGradient from './DolarChartGradient';
+import { DateRange } from '../DateRangePicker/DateRangePicker';
 
-const DolarChart: FunctionComponent<any> = (): JSX.Element => {
+export interface DolarChartProps {
+  dateRange?: DateRange;
+}
+
+const DolarChart: FunctionComponent<DolarChartProps> = ({
+  dateRange,
+}): JSX.Element => {
   const [chartData, setChartData] = useState<DolarHistoryAPIResult[]>([]);
 
   // Fetchs the data from the api using a defined service

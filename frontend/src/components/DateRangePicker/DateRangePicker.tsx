@@ -1,43 +1,41 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import { Box, TextField } from '@mui/material';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import localeES from 'dayjs/locale/es';
+import { DateRange } from '../../services/Date';
 
-export interface DateRange {
-  start: Dayjs;
-  end: Dayjs;
+export interface DateRangePickerProps {
+  value: DateRange;
+  onChange: (date: Dayjs | null, rangePhase: 'start' | 'end') => void;
+  startLabel: string;
+  endLabel: string;
 }
 
-const DateRangePicker: FunctionComponent<any> = (): JSX.Element => {
-  const [range, setRange] = useState<DateRange>({
-    start: dayjs().subtract(7, 'days'),
-    end: dayjs(),
-  });
-
-  const updateRangeState = (newDate: Dayjs | null, rangeKey: string) => {
-    if (!newDate) return;
-    setRange({ ...range, [rangeKey]: newDate });
-  };
-
+const DateRangePicker: FunctionComponent<DateRangePickerProps> = ({
+  value,
+  onChange,
+  startLabel,
+  endLabel
+}): JSX.Element => {
   return (
     <Box>
       <LocalizationProvider dateAdapter={DateAdapter} locale={localeES}>
         <DatePicker
-          maxDate={range.end}
-          value={range.start}
-          onChange={(date) => updateRangeState(date, 'start')}
-          label="Fecha inicial"
+          maxDate={value.end}
+          value={value.start}
+          onChange={(date) => onChange(date, 'start')}
+          label={startLabel}
           renderInput={(params) => (
             <TextField {...params} name="start-date" id="startDate" />
           )}
         />
         <DatePicker
           maxDate={dayjs().add(1, 'days')}
-          value={range.end}
-          onChange={(date) => updateRangeState(date, 'end')}
-          label="Fecha final"
+          value={value.end}
+          onChange={(date) => onChange(date, 'end')}
+          label={endLabel}
           renderInput={(params) => (
             <TextField {...params} name="end-date" id="endDate" />
           )}
