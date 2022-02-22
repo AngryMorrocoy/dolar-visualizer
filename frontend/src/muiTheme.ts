@@ -1,12 +1,15 @@
 import { ThemeOptions } from '@mui/material/';
 
-const themeOptions: ThemeOptions = {
+export const themeOptions: ThemeOptions = {
   typography: {
     fontFamily: ['Oxygen', 'sans-serif'].join(','),
     fontSize: 14,
   },
   palette: {
     // mode: 'dark',
+    background: {
+      default: '#FFF7D6'
+    },
     primary: {
       main: '#005B73',
     },
@@ -18,5 +21,3 @@ const themeOptions: ThemeOptions = {
     },
   },
 };
-
-export { themeOptions };

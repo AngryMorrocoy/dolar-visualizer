@@ -19,8 +19,8 @@ const DolarChart: FunctionComponent<any> = (): JSX.Element => {
   useEffect(() => {
     const fetchDolar = async () => {
       const dolarHistory = await getDolarHistory({
-        page_size: 300,
-        date__range: ['2021-10-01', '2022-02-20'],
+        page_size: 18,
+        // date__range: ['2022-10-01', '2022-02-20'],
       });
 
       setChartData(dolarHistory.reverse());
