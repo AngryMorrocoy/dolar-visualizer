@@ -27,7 +27,7 @@ const BodyChart: FunctionComponent<any> = (): JSX.Element => {
         startLabel="Fecha inicial"
         endLabel="Fecha final"
       />
-      <DolarChart />
+      <DolarChart dateRange={dateRange} width={700} height={400} />
     </>
   );
 };

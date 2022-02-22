@@ -15,7 +15,7 @@ export const dateRangeAsIsoDate = (dateRange: DateRange): [string, string] => {
   const isoFormat = 'YYYY-MM-DDT';
 
   const start: string = dateRange.start.format(isoFormat + '00:00:00Z');
-  const end: string = dateRange.start.format(isoFormat + '23:59:59Z');
+  const end: string = dateRange.end.format(isoFormat + '23:59:59Z');
 
   return [start, end];
 };

@@ -11,35 +11,41 @@ import {
 } from 'recharts';
 import { prettyDate } from '../../services/Date/';
 import DolarChartGradient from './DolarChartGradient';
-import { DateRange } from '../DateRangePicker/DateRangePicker';
+import { DateRange, dateRangeAsIsoDate } from '../../services/Date';
 
 export interface DolarChartProps {
-  dateRange?: DateRange;
+  dateRange: DateRange;
+  width: number;
+  height: number;
 }
 
 const DolarChart: FunctionComponent<DolarChartProps> = ({
   dateRange,
+  width,
+  height,
 }): JSX.Element => {
   const [chartData, setChartData] = useState<DolarHistoryAPIResult[]>([]);
 
   // Fetchs the data from the api using a defined service
   useEffect(() => {
     const fetchDolar = async () => {
-      const dolarHistory = await getDolarHistory({
-        page_size: 18,
-        // date__range: ['2022-10-01', '2022-02-20'],
-      });
+      let params = {
+        page_size: 1500,
+        date__range: dateRangeAsIsoDate(dateRange),
+      };
+
+      const dolarHistory = await getDolarHistory(params);
 
       setChartData(dolarHistory.reverse());
     };
 
     fetchDolar();
-  }, []);
+  }, [dateRange]);
 
   return (
     <AreaChart
-      width={900}
-      height={600}
+      width={width}
+      height={height}
       data={chartData.map((value) => {
         return { ...value, date: value.date.toDate() };
       })}
