@@ -2,7 +2,6 @@ import { FunctionComponent } from 'react';
 import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 
 const Header: FunctionComponent<any> = (): JSX.Element => {
   return (
