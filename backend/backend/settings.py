@@ -12,11 +12,32 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from dotenv import dotenv_values
+import os
+import re
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-ENV = dict(dotenv_values())
+
+STAGE_MODE = os.environ.get("STAGE_MODE")
+ENV = NotImplemented
+
+if STAGE_MODE == "PROD":
+    ENV = os.environ
+    regex = "^postgres://(.+):(.+)@(.+)/(.+)$"
+    username, password, host, dbname = re.search(
+        regex, ENV.get("DATABASE_URL")
+    ).groups()
+
+    ENV["DATABASE_NAME"] = dbname
+    ENV["DATABASE_USER"] = username
+    ENV["DATABASE_PASS"] = password
+    ENV["DATABASE_HOST"] = host.split(":")[0]
+    ENV["DATABASE_PORT"] = host.split(":")[1]
+
+elif STAGE_MODE == "DEV" or not STAGE_MODE:
+    ENV = dict(dotenv_values())
+    STAGE_MODE = "DEV"
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +47,7 @@ ENV = dict(dotenv_values())
 SECRET_KEY = ENV["DJANGO_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = STAGE_MODE != "DEV"
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
@@ -57,6 +78,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -86,21 +108,15 @@ CORS_ALLOW_ALL_ORIGINS = (
     True  # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
 )
 
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
-# ]
-
-# Uncomment this for production
-
-# REST_FRAMEWORK = {
-#     "DEFAULT_RENDERER_CLASSES": [
-#         "rest_framework.renderers.JSONRenderer",
-#     ],
-#     "DEFAULT_PARSER_CLASSES": [
-#         "rest_framework.parsers.JSONParser",
-#     ],
-# }
+if STAGE_MODE == "PROD":
+    REST_FRAMEWORK = {
+        "DEFAULT_RENDERER_CLASSES": [
+            "rest_framework.renderers.JSONRenderer",
+        ],
+        "DEFAULT_PARSER_CLASSES": [
+            "rest_framework.parsers.JSONParser",
+        ],
+    }
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
@@ -113,7 +129,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": ENV["DATABASE_NAME"],
         "USER": ENV["DATABASE_USER"],
-        "PASSWORD": ENV["DATABASE_USER"],
+        "PASSWORD": ENV["DATABASE_PASS"],
         "HOST": ENV["DATABASE_HOST"],
         "PORT": ENV["DATABASE_PORT"],
     }

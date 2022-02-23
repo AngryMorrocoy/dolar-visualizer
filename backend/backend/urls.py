@@ -23,5 +23,5 @@ urlpatterns = [
     path("", include("frontend.urls")),
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
-    re_path("static/(?P<path>).*", serve, {"document_root": STATIC_ROOT}),
+    re_path("assets/(?P<path>).*", serve, {"document_root": STATIC_ROOT}),
 ]
