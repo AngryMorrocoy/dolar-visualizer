@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = import.meta.env.DEV ? 'http://localhost:8000/api' : '/api';
 
 const axios_ = axios.create();
 axios_.defaults.baseURL = API_URL;

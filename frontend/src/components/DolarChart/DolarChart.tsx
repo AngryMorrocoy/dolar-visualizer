@@ -49,10 +49,6 @@ const DolarChart: FunctionComponent<DolarChartProps> = ({
         data={chartData.map((value) => {
           return { ...value, date: value.date.toDate() };
         })}
-        onClick={(ns, evt) => {
-          console.log(ns);
-          console.log(evt);
-        }}
       >
         <defs>
           <DolarChartGradient id="dolarHistoryGradient" />
