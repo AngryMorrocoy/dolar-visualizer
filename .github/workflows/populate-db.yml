@@ -17,4 +17,4 @@ jobs:
         env:
           URL: "${{ secrets.HEROKU_APP_URL }}api/dolar-history/?count=15"
           API_KEY: ${{ secrets.DOLAR_VISUALIZER_API_KEY }}
-        run: curl -d {} "${URL}" -H "Authorization:\ Bearer\ ${API_KEY}"
+        run: curl -d {} "${URL}" -H "Authorization:\ Bearer ${API_KEY}"
