@@ -1,10 +1,10 @@
 name: Database population
 
-# Controls when the workflow will run
 on:
   # Triggers the workflow in the middle of the week
   schedule:
     - cron: '00 11,15 * * 0-4'
+  workflow_dispatch:
 
 jobs:
   populate:
