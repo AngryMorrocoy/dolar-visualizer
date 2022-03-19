@@ -20,7 +20,12 @@ const DateRangePicker: FunctionComponent<DateRangePickerProps> = ({
   endLabel,
 }): JSX.Element => {
   return (
-    <Box>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
       <LocalizationProvider dateAdapter={DateAdapter} locale={localeES}>
         <DatePicker
           maxDate={value.end}
