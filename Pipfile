@@ -7,12 +7,13 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
-psycopg2 = "*"
 requests = "*"
 python-dotenv = "*"
 django-filter = "*"
 django-cors-headers = "*"
 whitenoise = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

@@ -1,0 +1,7 @@
+__pycache__
+.git
+.env*
+frontend/dist
+frontend/node_modules
+backend/static
+backend/frontend/templates/frontend/*
