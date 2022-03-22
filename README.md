@@ -1,7 +1,7 @@
 # Dolar visualizer
 
 This is a fullstack app to visualize a graphic of the price over time in
-Venezuela.
+Venezuela. You can see it live [here](https://dolar-visualizer.herokuapp.com/)
 
 # Index
 
@@ -9,6 +9,7 @@ Venezuela.
 - [API](#api)
     - [Date format](#date-format)
     - [GET: /api/dolar-history/](#get-apidolar-history)
+    - [POST: /api/dolar-history/](#post-apidolar-history)
 
 ## How it works?
 
@@ -70,7 +71,22 @@ The way the date is parsed by the API is
   \
   Will return a repsonse with 5 items in the "results" field.
 
----
-
 It's **IMPORTANT** to know that non of this params exclude others. So you can
 use all of them in a single request if you want to.
+
+---
+
+### POST: /api/dolar-history/
+
+This is a protected "*admin only*" route to fetch data from the twitter api and
+parse it into the database.
+
+***Response***:
+
+- **errors**: An array with the errors that happened when trying to fetch the data.
+- **created_objects**: An array with the objects created on the database (prices
+  of the dollar).
+
+***Params***:
+
+- **count**: The number of tweets you want to fetch (Default: 5).
